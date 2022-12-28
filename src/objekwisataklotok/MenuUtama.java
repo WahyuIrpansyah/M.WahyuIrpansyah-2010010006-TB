@@ -28,13 +28,13 @@ public class MenuUtama extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        menuLB = new javax.swing.JLabel();
+        pembelianBTN = new javax.swing.JButton();
+        datakelotokBTN = new javax.swing.JButton();
+        datapembelianBTN = new javax.swing.JButton();
+        laporanBTN = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        tema2LB = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
@@ -42,28 +42,28 @@ public class MenuUtama extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("MENU UTAMA");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
+        menuLB.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        menuLB.setForeground(new java.awt.Color(255, 255, 255));
+        menuLB.setText("MENU UTAMA");
+        jPanel1.add(menuLB, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
 
-        jButton1.setText("Pembelian Tiket");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 140, 60));
+        pembelianBTN.setText("Pembelian Tiket");
+        jPanel1.add(pembelianBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 140, 60));
 
-        jButton2.setText("Data Kelotok");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 140, 60));
+        datakelotokBTN.setText("Data Kelotok");
+        jPanel1.add(datakelotokBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 140, 60));
 
-        jButton3.setText("Data Pembelian");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 140, 60));
+        datapembelianBTN.setText("Data Pembelian");
+        jPanel1.add(datapembelianBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 140, 60));
 
-        jButton4.setText("Laporan");
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, 140, 60));
+        laporanBTN.setText("Laporan");
+        jPanel1.add(laporanBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, 140, 60));
 
         jButton5.setText("Logout");
         jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, 350, -1));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/objekwisataklotok/tema2.jpg"))); // NOI18N
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 390, 200));
+        tema2LB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/objekwisataklotok/tema2.jpg"))); // NOI18N
+        jPanel1.add(tema2LB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 390, 200));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -115,13 +115,13 @@ public class MenuUtama extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton datakelotokBTN;
+    private javax.swing.JButton datapembelianBTN;
     private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton laporanBTN;
+    private javax.swing.JLabel menuLB;
+    private javax.swing.JButton pembelianBTN;
+    private javax.swing.JLabel tema2LB;
     // End of variables declaration//GEN-END:variables
 }
