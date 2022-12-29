@@ -5,6 +5,8 @@
  */
 package objekwisataklotok;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ACER
@@ -55,9 +57,19 @@ public class login extends javax.swing.JFrame {
         jPanel1.add(passwordTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 230, -1));
 
         loginBTN.setText("Login");
+        loginBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginBTNActionPerformed(evt);
+            }
+        });
         jPanel1.add(loginBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 120, -1));
 
         KembaliBT.setText("Kembali");
+        KembaliBT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                KembaliBTActionPerformed(evt);
+            }
+        });
         jPanel1.add(KembaliBT, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 126, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
@@ -87,6 +99,30 @@ public class login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void loginBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBTNActionPerformed
+        // TODO add your handling code here:
+          if((usernameTF.getText().equals("M.Wahyu Irpansyah")) &&
+            (String.valueOf(passwordTF.getText()).equals("Wahyu123"))){
+        new MenuUtama().setVisible(true);
+        dispose();
+        }else{
+            JOptionPane.showMessageDialog(
+                null,
+                   usernameTF.getText() +
+                   ", password anda salah",
+                   "Pesan Kesalahan",
+                   JOptionPane.ERROR_MESSAGE);
+            usernameTF.setText("");
+            passwordTF.setText("");
+            usernameTF.requestFocus();
+        }                         
+    }//GEN-LAST:event_loginBTNActionPerformed
+
+    private void KembaliBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KembaliBTActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_KembaliBTActionPerformed
 
     /**
      * @param args the command line arguments
