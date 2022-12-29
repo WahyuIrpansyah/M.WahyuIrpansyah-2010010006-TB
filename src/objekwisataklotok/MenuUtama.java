@@ -5,6 +5,8 @@
  */
 package objekwisataklotok;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ACER
@@ -32,8 +34,7 @@ public class MenuUtama extends javax.swing.JFrame {
         pembelianBTN = new javax.swing.JButton();
         datakelotokBTN = new javax.swing.JButton();
         datapembelianBTN = new javax.swing.JButton();
-        laporanBTN = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        logoutBTN = new javax.swing.JButton();
         tema2LB = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -45,22 +46,39 @@ public class MenuUtama extends javax.swing.JFrame {
         menuLB.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         menuLB.setForeground(new java.awt.Color(255, 255, 255));
         menuLB.setText("MENU UTAMA");
-        jPanel1.add(menuLB, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
+        jPanel1.add(menuLB, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, -1, -1));
 
         pembelianBTN.setText("Pembelian Tiket");
-        jPanel1.add(pembelianBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 140, 60));
+        pembelianBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pembelianBTNActionPerformed(evt);
+            }
+        });
+        jPanel1.add(pembelianBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 330, 60));
 
         datakelotokBTN.setText("Data Kelotok");
-        jPanel1.add(datakelotokBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 140, 60));
+        datakelotokBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datakelotokBTNActionPerformed(evt);
+            }
+        });
+        jPanel1.add(datakelotokBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 160, 60));
 
         datapembelianBTN.setText("Data Pembelian");
-        jPanel1.add(datapembelianBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 140, 60));
+        datapembelianBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datapembelianBTNActionPerformed(evt);
+            }
+        });
+        jPanel1.add(datapembelianBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 160, 60));
 
-        laporanBTN.setText("Laporan");
-        jPanel1.add(laporanBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, 140, 60));
-
-        jButton5.setText("Logout");
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, 350, -1));
+        logoutBTN.setText("Logout");
+        logoutBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutBTNActionPerformed(evt);
+            }
+        });
+        jPanel1.add(logoutBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, 350, -1));
 
         tema2LB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/objekwisataklotok/tema2.jpg"))); // NOI18N
         jPanel1.add(tema2LB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 390, 200));
@@ -79,34 +97,38 @@ public class MenuUtama extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void logoutBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBTNActionPerformed
+        // TODO add your handling code here:
+            int result = JOptionPane.showConfirmDialog(null, "Apakah Anda Yakin", "Confirmation", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+            new login().setVisible(true);
+            dispose();
+            } else {
+    }//GEN-LAST:event_logoutBTNActionPerformed
+  }
+    private void pembelianBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pembelianBTNActionPerformed
+        // TODO add your handling code here:
+        new PembelianTiket().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_pembelianBTNActionPerformed
+
+    private void datakelotokBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datakelotokBTNActionPerformed
+        // TODO add your handling code here:
+        new DataKelotok().setVisible(true);
+            dispose();
+    }//GEN-LAST:event_datakelotokBTNActionPerformed
+
+    private void datapembelianBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datapembelianBTNActionPerformed
+        // TODO add your handling code here:
+        new DataPembelian().setVisible(true);
+            dispose();
+    }//GEN-LAST:event_datapembelianBTNActionPerformed
+ 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MenuUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MenuUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MenuUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MenuUtama().setVisible(true);
@@ -117,9 +139,8 @@ public class MenuUtama extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton datakelotokBTN;
     private javax.swing.JButton datapembelianBTN;
-    private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton laporanBTN;
+    private javax.swing.JButton logoutBTN;
     private javax.swing.JLabel menuLB;
     private javax.swing.JButton pembelianBTN;
     private javax.swing.JLabel tema2LB;
