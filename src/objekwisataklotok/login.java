@@ -64,7 +64,7 @@ public class login extends javax.swing.JFrame {
         });
         jPanel1.add(loginBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 120, -1));
 
-        KembaliBT.setText("Kembali");
+        KembaliBT.setText("Keluar");
         KembaliBT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 KembaliBTActionPerformed(evt);
