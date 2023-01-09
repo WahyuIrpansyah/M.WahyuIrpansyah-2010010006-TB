@@ -22,8 +22,8 @@ public class Koneksi {
             return con=null;
     }
   }
-    public static void main(String[] args) {
-        Koneksi koneksi = new Koneksi();
-        koneksi.getConnection();
-    }
+    //public static void main(String[] args) {
+      //  Koneksi koneksi = new Koneksi();
+        //koneksi.getConnection();
+    //}
 }

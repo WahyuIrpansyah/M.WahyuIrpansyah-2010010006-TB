@@ -102,7 +102,7 @@ public class login extends javax.swing.JFrame {
 
     private void loginBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBTNActionPerformed
         // TODO add your handling code here:
-          if((usernameTF.getText().equals("M.Wahyu Irpansyah")) &&
+          if((usernameTF.getText().equals("M.WahyuIrpansyah")) &&
             (String.valueOf(passwordTF.getText()).equals("Wahyu123"))){
         new MenuUtama().setVisible(true);
         dispose();

@@ -5,6 +5,14 @@
  */
 package objekwisataklotok;
 
+import db.Koneksi;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ACER
@@ -16,6 +24,37 @@ public class DataKelotok extends javax.swing.JFrame {
      */
     public DataKelotok() {
         initComponents();
+        tampilan(); 
+  }
+
+    public final Connection conn = new Koneksi().getConnection();
+    Statement st;
+    ResultSet rs;
+    PreparedStatement pst;
+    DefaultTableModel tabMode;
+
+    public void tampilan(){
+        Object [] baris = {"Kelotok", "Nama Penumpang", "Jumlah Penumpang", "Tujuan Wisata"};
+        tabMode = new DefaultTableModel(null, baris);
+        klotokTB.setModel(tabMode);
+        try {
+                String sql = "SELECT * FROM tb_klotok";
+                st = conn.createStatement();
+                rs = st.executeQuery(sql);
+                int no = 0;
+                while (rs.next()){
+                        no++;
+                        String id = rs.getString("klotok");
+                        String nk = rs.getString("nama");
+                        String tk = rs.getString("jumlah_penumpang");
+                        String rk = rs.getString("tujuan_wisata");
+
+                        Object [] data = {no,id,nk,tk,rk};
+                        tabMode.addRow(data);
+                }
+        } catch (Exception e){
+                System.out.println(e.toString());
+        }
     }
 
     /**
@@ -30,11 +69,19 @@ public class DataKelotok extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        klotokTB = new javax.swing.JTable();
         editBTN = new javax.swing.JButton();
         hapusBTN = new javax.swing.JButton();
         cetakBTN = new javax.swing.JButton();
         KembaliBTN = new javax.swing.JButton();
+        namaTF = new javax.swing.JTextField();
+        klotokTF = new javax.swing.JTextField();
+        jumlahTF = new javax.swing.JTextField();
+        tujuanTF = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,7 +90,7 @@ public class DataKelotok extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("DATA KELOTOK");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        klotokTB.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -54,7 +101,12 @@ public class DataKelotok extends javax.swing.JFrame {
                 "Kelotok", "Nama Penumpang", "Jumlah Penumpang", "Tujuan Wisata"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        klotokTB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                klotokTBMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(klotokTB);
 
         editBTN.setText("Edit Data");
 
@@ -63,45 +115,94 @@ public class DataKelotok extends javax.swing.JFrame {
         cetakBTN.setText("Cetak Laporan");
 
         KembaliBTN.setText("Kembali");
+        KembaliBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                KembaliBTNActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Jumlah Penumpang");
+
+        jLabel4.setText("Tujuan Wisata");
+
+        jLabel3.setText("Nama Penumpang");
+
+        jLabel2.setText("Klotok");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 41, Short.MAX_VALUE)
-                        .addComponent(editBTN)
-                        .addGap(18, 18, 18)
-                        .addComponent(hapusBTN)
-                        .addGap(18, 18, 18)
-                        .addComponent(cetakBTN)
-                        .addGap(18, 18, 18)
-                        .addComponent(KembaliBTN)))
+                .addContainerGap()
+                .addComponent(jScrollPane1)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(123, 123, 123))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(123, 123, 123))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(klotokTF, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(namaTF, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jumlahTF, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tujuanTF, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(editBTN)
+                .addGap(18, 18, 18)
+                .addComponent(hapusBTN)
+                .addGap(18, 18, 18)
+                .addComponent(cetakBTN)
+                .addGap(18, 18, 18)
+                .addComponent(KembaliBTN)
+                .addGap(39, 39, 39))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(klotokTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(namaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jumlahTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(tujuanTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(editBTN)
                     .addComponent(hapusBTN)
                     .addComponent(cetakBTN)
                     .addComponent(KembaliBTN))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -117,6 +218,21 @@ public class DataKelotok extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void KembaliBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KembaliBTNActionPerformed
+        // TODO add your handling code here:
+        new MenuUtama().setVisible(true);
+         dispose();
+    }//GEN-LAST:event_KembaliBTNActionPerformed
+
+    private void klotokTBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_klotokTBMouseClicked
+        // TODO add your handling code here:
+        int tabel = klotokTB.getSelectedRow();
+        klotokTF.setText(klotokTB.getValueAt (tabel, 0).toString());
+        namaTF.setText(klotokTB.getValueAt (tabel, 1).toString());
+        jumlahTF.setText(klotokTB.getValueAt (tabel, 2).toString());
+        tujuanTF.setText(klotokTB.getValueAt (tabel, 3).toString());
+    }//GEN-LAST:event_klotokTBMouseClicked
 
     /**
      * @param args the command line arguments
@@ -159,8 +275,16 @@ public class DataKelotok extends javax.swing.JFrame {
     private javax.swing.JButton editBTN;
     private javax.swing.JButton hapusBTN;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jumlahTF;
+    private javax.swing.JTable klotokTB;
+    private javax.swing.JTextField klotokTF;
+    private javax.swing.JTextField namaTF;
+    private javax.swing.JTextField tujuanTF;
     // End of variables declaration//GEN-END:variables
 }

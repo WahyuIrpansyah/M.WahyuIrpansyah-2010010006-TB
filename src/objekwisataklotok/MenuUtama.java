@@ -115,7 +115,7 @@ public class MenuUtama extends javax.swing.JFrame {
     private void datakelotokBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datakelotokBTNActionPerformed
         // TODO add your handling code here:
         new DataKelotok().setVisible(true);
-            dispose();
+         dispose();
     }//GEN-LAST:event_datakelotokBTNActionPerformed
 
     private void datapembelianBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datapembelianBTNActionPerformed
