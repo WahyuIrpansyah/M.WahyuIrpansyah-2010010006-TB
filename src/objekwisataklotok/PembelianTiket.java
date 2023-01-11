@@ -77,7 +77,6 @@ public ResultSet rs;
         kembalianTF = new javax.swing.JTextField();
         hapusBTN = new javax.swing.JButton();
         simpanBTN = new javax.swing.JButton();
-        cetakBTN = new javax.swing.JButton();
         kembaliBTN = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         klotokTF = new javax.swing.JTextField();
@@ -147,8 +146,6 @@ public ResultSet rs;
             }
         });
 
-        cetakBTN.setText("Cetak");
-
         kembaliBTN.setText("Kembali");
         kembaliBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,7 +167,7 @@ public ResultSet rs;
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -186,16 +183,6 @@ public ResultSet rs;
                                     .addComponent(hargaTF, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(tujuanCB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(bayarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(hapusBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(simpanBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cetakBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(kembaliBTN))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(jLabel6)
@@ -208,7 +195,15 @@ public ResultSet rs;
                             .addComponent(totalTF, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(klotokTF, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(kembalianTF)
-                            .addComponent(jumlahpenumpangTF, javax.swing.GroupLayout.Alignment.LEADING))))
+                            .addComponent(jumlahpenumpangTF, javax.swing.GroupLayout.Alignment.LEADING)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(bayarBTN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(hapusBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(simpanBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(kembaliBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -250,7 +245,6 @@ public ResultSet rs;
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bayarBTN)
                     .addComponent(hapusBTN)
-                    .addComponent(cetakBTN)
                     .addComponent(kembaliBTN)
                     .addComponent(simpanBTN))
                 .addContainerGap())
@@ -384,7 +378,6 @@ public ResultSet rs;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bayarBTN;
-    private javax.swing.JButton cetakBTN;
     private javax.swing.JButton hapusBTN;
     private javax.swing.JTextField hargaTF;
     private javax.swing.JLabel jLabel1;
