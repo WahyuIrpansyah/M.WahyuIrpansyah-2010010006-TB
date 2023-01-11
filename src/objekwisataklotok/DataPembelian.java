@@ -312,7 +312,7 @@ private Connection con;
             ubah = st.executeUpdate(sql);
 
             if (ubah == 1){
-             int ok = JOptionPane.showConfirmDialog(null,"Hapus..?","Konfirmasi Dialog",JOptionPane.YES_NO_OPTION);
+             int ok = JOptionPane.showConfirmDialog(null,"apakah ada yakin..?","Konfirmasi Dialog",JOptionPane.YES_NO_OPTION);
              JOptionPane.showMessageDialog(null, "Sukses");
             }
         } catch (Exception e){
