@@ -6,19 +6,30 @@
 package objekwisataklotok;
 
 import db.Koneksi;
+import java.io.File;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.HashMap;
+import java.util.Map;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 
 
 
 
 public class DataPembelian extends javax.swing.JFrame {
-
+private Connection con;
     /**
      * Creates new form DataPembelian
      */
@@ -41,15 +52,14 @@ public class DataPembelian extends javax.swing.JFrame {
                 String sql = "SELECT * FROM tb_pembelian";
                 st = conn.createStatement();
                 rs = st.executeQuery(sql);
-                int no = 0;
+                
                 while (rs.next()){
-                        no++;
-                        String id = rs.getString("nama");
-                        String nk = rs.getString("jumlah_penumpang");
-                        String tk = rs.getString("harga_tiket");
-                        String rk = rs.getString("total");
+                        String nm = rs.getString("nama");
+                        String jp = rs.getString("jumlah_penumpang");
+                        String ht = rs.getString("harga_tiket");
+                        String tl = rs.getString("total");
 
-                        Object [] data = {no,id,nk,tk,rk};
+                        Object [] data = {nm,jp,ht,tl};
                         tabMode.addRow(data);
                 }
         } catch (Exception e){
@@ -71,8 +81,6 @@ public class DataPembelian extends javax.swing.JFrame {
         hapusBTN = new javax.swing.JButton();
         cetakBTN = new javax.swing.JButton();
         KembaliBTN = new javax.swing.JButton();
-        totalLB = new javax.swing.JLabel();
-        hasilLB = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         namaTF = new javax.swing.JTextField();
@@ -94,6 +102,7 @@ public class DataPembelian extends javax.swing.JFrame {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
+                {null, null, null, null},
                 {null, null, null, null}
             },
             new String [] {
@@ -106,8 +115,20 @@ public class DataPembelian extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(pembelianTB);
+        if (pembelianTB.getColumnModel().getColumnCount() > 0) {
+            pembelianTB.getColumnModel().getColumn(0).setHeaderValue("Nama");
+            pembelianTB.getColumnModel().getColumn(1).setHeaderValue("Jumlah Penumpang");
+            pembelianTB.getColumnModel().getColumn(2).setResizable(false);
+            pembelianTB.getColumnModel().getColumn(2).setHeaderValue("Harga Tiket");
+            pembelianTB.getColumnModel().getColumn(3).setHeaderValue("Total");
+        }
 
         editBTN.setText("Edit Data");
+        editBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editBTNActionPerformed(evt);
+            }
+        });
 
         hapusBTN.setText("Hapus Data");
         hapusBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -117,6 +138,11 @@ public class DataPembelian extends javax.swing.JFrame {
         });
 
         cetakBTN.setText("Cetak Laporan");
+        cetakBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cetakBTNActionPerformed(evt);
+            }
+        });
 
         KembaliBTN.setText("Kembali");
         KembaliBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -124,9 +150,6 @@ public class DataPembelian extends javax.swing.JFrame {
                 KembaliBTNActionPerformed(evt);
             }
         });
-
-        totalLB.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        totalLB.setText("TOTAL KEUNTUNGAN =");
 
         jLabel2.setText("Nama");
 
@@ -165,24 +188,17 @@ public class DataPembelian extends javax.swing.JFrame {
                             .addComponent(totalTF, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(editBTN, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(hapusBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cetakBTN)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(KembaliBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(totalLB)
+                        .addComponent(editBTN, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(hasilLB, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(hapusBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cetakBTN)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(KembaliBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -210,17 +226,13 @@ public class DataPembelian extends javax.swing.JFrame {
                             .addComponent(totalTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(totalLB)
-                    .addComponent(hasilLB, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(editBTN)
                     .addComponent(hapusBTN)
                     .addComponent(cetakBTN)
                     .addComponent(KembaliBTN))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -245,8 +257,20 @@ public class DataPembelian extends javax.swing.JFrame {
 
     private void hapusBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusBTNActionPerformed
         // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(null,"Hapus..?","Konfirmasi Dialog",JOptionPane.YES_NO_OPTION);
-           
+        try {
+            int hapus;
+            
+            String sql = "DELETE FROM tb_pembelian WHERE nama = '"+namaTF.getText()+"' ";
+            st = conn.createStatement();
+            hapus = st.executeUpdate(sql);
+
+            if (hapus == 1){
+             int ok = JOptionPane.showConfirmDialog(null,"Hapus..?","Konfirmasi Dialog",JOptionPane.YES_NO_OPTION);
+             JOptionPane.showMessageDialog(null, "Sukses");
+            }
+        } catch (Exception e){
+             System.out.println(e.toString());
+        }    
     }//GEN-LAST:event_hapusBTNActionPerformed
 
     private void pembelianTBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pembelianTBMouseClicked
@@ -257,6 +281,44 @@ public class DataPembelian extends javax.swing.JFrame {
         hargaTF.setText(pembelianTB.getValueAt (tabel, 2).toString());
         totalTF.setText(pembelianTB.getValueAt (tabel, 3).toString());
     }//GEN-LAST:event_pembelianTBMouseClicked
+
+    private void cetakBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cetakBTNActionPerformed
+        // TODO add your handling code here:
+        JasperReport jr;
+        JasperPrint  jp;
+        Map<String, Object> kode = new HashMap<String, Object>();
+        JasperDesign jd;
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tb_objekwisataklotok","root","");
+            File report =new File("src\\Laporan\\RptDataPembelian.jrxml");
+            jd=JRXmlLoader.load(report);
+            kode.clear();
+            jr=JasperCompileManager.compileReport(jd);
+            jp=JasperFillManager.fillReport(jr, kode, con);
+            JasperViewer.viewReport(jp, false);
+        }catch (Exception e){
+        JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_cetakBTNActionPerformed
+
+    private void editBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBTNActionPerformed
+        // TODO add your handling code here:
+          try {
+            int ubah;
+
+            String sql = "UPDATE tb_pembelian SET jumlah_penumpang = '"+ jumlahTF.getText() +"',harga_tiket = '"+hargaTF.getText()+"',total = '"+totalTF.getText()+"' WHERE nama = '"+ namaTF.getText() +"' ";
+            st = conn.createStatement();
+            ubah = st.executeUpdate(sql);
+
+            if (ubah == 1){
+             int ok = JOptionPane.showConfirmDialog(null,"Hapus..?","Konfirmasi Dialog",JOptionPane.YES_NO_OPTION);
+             JOptionPane.showMessageDialog(null, "Sukses");
+            }
+        } catch (Exception e){
+             System.out.println(e.toString());
+        } 
+    }//GEN-LAST:event_editBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -299,7 +361,6 @@ public class DataPembelian extends javax.swing.JFrame {
     private javax.swing.JButton editBTN;
     private javax.swing.JButton hapusBTN;
     private javax.swing.JTextField hargaTF;
-    private javax.swing.JLabel hasilLB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -310,7 +371,6 @@ public class DataPembelian extends javax.swing.JFrame {
     private javax.swing.JTextField jumlahTF;
     private javax.swing.JTextField namaTF;
     private javax.swing.JTable pembelianTB;
-    private javax.swing.JLabel totalLB;
     private javax.swing.JTextField totalTF;
     // End of variables declaration//GEN-END:variables
 }

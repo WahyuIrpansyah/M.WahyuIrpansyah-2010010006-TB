@@ -6,19 +6,34 @@
 package objekwisataklotok;
 
 import db.Koneksi;
+import java.io.File;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
  * @author ACER
  */
 public class DataKelotok extends javax.swing.JFrame {
-
+private Connection con;
+public Statement stat;
     /**
      * Creates new form DataKelotok
      */
@@ -41,15 +56,13 @@ public class DataKelotok extends javax.swing.JFrame {
                 String sql = "SELECT * FROM tb_klotok";
                 st = conn.createStatement();
                 rs = st.executeQuery(sql);
-                int no = 0;
                 while (rs.next()){
-                        no++;
-                        String id = rs.getString("klotok");
-                        String nk = rs.getString("nama");
-                        String tk = rs.getString("jumlah_penumpang");
-                        String rk = rs.getString("tujuan_wisata");
+                        String kl = rs.getString("klotok");
+                        String nm = rs.getString("nama");
+                        String jp = rs.getString("jumlah_penumpang");
+                        String tw = rs.getString("tujuan_wisata");
 
-                        Object [] data = {no,id,nk,tk,rk};
+                        Object [] data = {kl,nm,jp,tw};
                         tabMode.addRow(data);
                 }
         } catch (Exception e){
@@ -77,11 +90,11 @@ public class DataKelotok extends javax.swing.JFrame {
         namaTF = new javax.swing.JTextField();
         klotokTF = new javax.swing.JTextField();
         jumlahTF = new javax.swing.JTextField();
-        tujuanTF = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        tujuanCB = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,6 +105,7 @@ public class DataKelotok extends javax.swing.JFrame {
 
         klotokTB.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
@@ -109,10 +123,25 @@ public class DataKelotok extends javax.swing.JFrame {
         jScrollPane1.setViewportView(klotokTB);
 
         editBTN.setText("Edit Data");
+        editBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editBTNActionPerformed(evt);
+            }
+        });
 
         hapusBTN.setText("Hapus Data");
+        hapusBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hapusBTNActionPerformed(evt);
+            }
+        });
 
         cetakBTN.setText("Cetak Laporan");
+        cetakBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cetakBTNActionPerformed(evt);
+            }
+        });
 
         KembaliBTN.setText("Kembali");
         KembaliBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -129,47 +158,55 @@ public class DataKelotok extends javax.swing.JFrame {
 
         jLabel2.setText("Klotok");
 
+        tujuanCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PILIH OBJEK WISATA", "Wisata Pulau Kembang", "Wisata Keliling Banjarmasin", "Wisata Kampung Hijau" }));
+        tujuanCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tujuanCBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(123, 123, 123))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(klotokTF, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(namaTF, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(klotokTF, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                                    .addComponent(namaTF))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jumlahTF)
+                                    .addComponent(tujuanCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jumlahTF, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tujuanTF, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(editBTN)
-                .addGap(18, 18, 18)
-                .addComponent(hapusBTN)
-                .addGap(18, 18, 18)
-                .addComponent(cetakBTN)
-                .addGap(18, 18, 18)
-                .addComponent(KembaliBTN)
-                .addGap(39, 39, 39))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(187, 187, 187))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(editBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(hapusBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cetakBTN)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(KembaliBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(54, 54, 54))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,7 +230,8 @@ public class DataKelotok extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(tujuanTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(tujuanCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(3, 3, 3)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
@@ -231,8 +269,68 @@ public class DataKelotok extends javax.swing.JFrame {
         klotokTF.setText(klotokTB.getValueAt (tabel, 0).toString());
         namaTF.setText(klotokTB.getValueAt (tabel, 1).toString());
         jumlahTF.setText(klotokTB.getValueAt (tabel, 2).toString());
-        tujuanTF.setText(klotokTB.getValueAt (tabel, 3).toString());
     }//GEN-LAST:event_klotokTBMouseClicked
+
+    private void cetakBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cetakBTNActionPerformed
+        // TODO add your handling code here:
+         JasperReport jr;
+        JasperPrint  jp;
+        Map<String, Object> kode = new HashMap<String, Object>();
+        JasperDesign jd;
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tb_objekwisataklotok","root","");
+            File report =new File("src\\Laporan\\RptDataKlotok.jrxml");
+            jd=JRXmlLoader.load(report);
+            kode.clear();
+            jr=JasperCompileManager.compileReport(jd);
+            jp=JasperFillManager.fillReport(jr, kode, con);
+            JasperViewer.viewReport(jp, false);
+        }catch (Exception e){
+        JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_cetakBTNActionPerformed
+
+    private void editBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBTNActionPerformed
+        // TODO add your handling code here:
+             try {
+            int ubah;
+
+            String sql = "UPDATE tb_klotok SET nama = '"+ namaTF.getText() +"',jumlah_penumpang = '"+ jumlahTF.getText() +"',tujuan_wisata = '"+tujuanCB.getSelectedItem()+"' WHERE klotok = '"+ klotokTF.getText() +"' ";
+            st = conn.createStatement();
+            ubah = st.executeUpdate(sql);
+
+            if (ubah == 1){
+             int ok = JOptionPane.showConfirmDialog(null,"apakah anda yakin?","Konfirmasi Dialog",JOptionPane.YES_NO_OPTION);
+             JOptionPane.showMessageDialog(null, "Sukses");
+            }
+        } catch (Exception e){
+             System.out.println(e.toString());
+        } 
+    }//GEN-LAST:event_editBTNActionPerformed
+
+    private void hapusBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusBTNActionPerformed
+        // TODO add your handling code here:
+         try {
+            int hapus;
+            
+            String sql = "DELETE FROM tb_klotok WHERE klotok = '"+klotokTF.getText()+"' ";
+            st = conn.createStatement();
+            hapus = st.executeUpdate(sql);
+
+            if (hapus == 1){
+            int ok = JOptionPane.showConfirmDialog(null,"Apakah Anda Yakin?","Konfirmasi Dialog",JOptionPane.YES_NO_OPTION);
+             JOptionPane.showMessageDialog(null, "Sukses");
+
+            }
+        } catch (Exception e){
+             System.out.println(e.toString());
+        } 
+    }//GEN-LAST:event_hapusBTNActionPerformed
+
+    private void tujuanCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tujuanCBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tujuanCBActionPerformed
 
     /**
      * @param args the command line arguments
@@ -285,6 +383,6 @@ public class DataKelotok extends javax.swing.JFrame {
     private javax.swing.JTable klotokTB;
     private javax.swing.JTextField klotokTF;
     private javax.swing.JTextField namaTF;
-    private javax.swing.JTextField tujuanTF;
+    private javax.swing.JComboBox<String> tujuanCB;
     // End of variables declaration//GEN-END:variables
 }
